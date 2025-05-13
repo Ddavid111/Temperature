@@ -8,13 +8,13 @@ def wait_for_rabbitmq(host, port):
             with socket.create_connection((host, port), timeout=3):
                 return
         except OSError:
-            print("RabbitMQ nem elérhető, várakozás...")
+            print("RabbitMQ not available, waiting...")
             time.sleep(3)
 
 wait_for_rabbitmq('rabbitmq', 5672)
 
 def callback(ch, method, properties, body):
-    print(f"[Logger] Statisztika: {body.decode()}")
+    print(f"Statistic: {body.decode()}")
 
 connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
 channel = connection.channel()
@@ -24,5 +24,5 @@ channel.basic_consume(queue='temperatureStatistics',
                       on_message_callback=callback,
                       auto_ack=True)
 
-print('[Logger] Várakozás statisztikára...')
+print('Waiting for statistics...')
 channel.start_consuming()

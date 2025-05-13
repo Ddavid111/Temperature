@@ -9,7 +9,7 @@ def wait_for_rabbitmq(host, port):
             with socket.create_connection((host, port), timeout=3):
                 return
         except OSError:
-            print("RabbitMQ nem elérhető, várakozás...")
+            print("RabbitMQ not available, waiting...")
             time.sleep(3)
 
 wait_for_rabbitmq('rabbitmq', 5672)
@@ -23,5 +23,5 @@ while True:
     channel.basic_publish(exchange='',
                           routing_key='temperature',
                           body=str(temp))
-    print(f"[Producer] Küldött hőmérséklet: {temp}")
+    print(f"Sent temperature: {temp}")
     time.sleep(2)
