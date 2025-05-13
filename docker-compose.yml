@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  producer:
+    build: ./producer
+    depends_on:
+      - rabbitmq
+
+  consumer:
+    build: ./consumer
+    depends_on:
+      - rabbitmq
+
+  statistic:
+    build: ./statistic
+    depends_on:
+      - rabbitmq
